@@ -3,7 +3,7 @@ win_width = 600
 win_height = 500
 
 window = display.set_mode((win_width, win_height))
-background = transform.scale(image.load('bigbob.jpg'), (win_width, win_height))
+background = transform.scale(image.load('bigbob.png'), (win_width, win_height))
 
 window.blit(background,(0,0))
 
@@ -26,22 +26,34 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite):
     def update_r(self):
         keys = key.get_pressed()
-        if keys[K_w] and self.rect.y >5:
-            self.rect.x -= self.speed
-        if keys[K_s] and self.rect.y < win_width -80:
-            self.rect.x += self.speed
+        if keys[K_UP] and self.rect.y >5:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.y < win_width -80:
+            self.rect.y += self.speed
     def update_l(self):
         keys = key.get_pressed()
-        if keys[K_UP] and self.rect.y >5:
-            self.rect.x -= self.speed
-        if keys[K_DOWN] and self.rect.y < win_width-80:
-            self.rect.x += self.speed
+        if keys[K_w] and self.rect.y >5:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < win_width -80:
+            self.rect.y += self.speed
+
+racket1 = Player("bigbobitaly.png", 30, 100, 30, 150, 15)
+racket2 = Player("bigbobfis.png", 520, 100, 30, 150, 15)
         
 
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+        if finish != True:
+
+            window.blit(background,(0,0))
+
+            racket1.update_l()
+            racket2.update_r()
+
+            racket1.reset()
+            racket2.reset()
 
 
     display.update()
