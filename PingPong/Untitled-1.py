@@ -39,21 +39,48 @@ class Player(GameSprite):
 
 racket1 = Player("bigbobitaly.png", 30, 100, 30, 150, 15)
 racket2 = Player("bigbobfis.png", 520, 100, 30, 150, 15)
-        
+ball = GameSprite('bigbobcheese.png', 280, 200, 40, 40, 4)
+
+
+font.init()
+font = font.Font(None, 35)
+lose1 = font.render('Player 1 Lose!', 180, (180, 0, 0))
+lose2 = font.render('Player 2 Lose!', 180, (180, 0, 0))
+
+dx = 3
+dy = 3
 
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
-        if finish != True:
+    if finish != True:
 
-            window.blit(background,(0,0))
+        window.blit(background,(0,0))
 
-            racket1.update_l()
-            racket2.update_r()
+        racket1.update_l()
+        racket2.update_r()
 
-            racket1.reset()
-            racket2.reset()
+        if ball.rect.x < 0:
+            finish = True
+            window.blit(lose1, (200, 200))
+
+        if ball.rect.x > win_width:
+            finish = True
+            window.blit(lose2, (200, 200))
+
+        ball.rect.x += dx #движение мяча
+        ball.rect.y += dy #движение мяча
+        if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
+            dx *= -1
+        if ball.rect.y < 0 or ball.rect.y > win_height-40:
+            dy *= -1
+
+        racket1.reset()
+        racket2.reset()
+
+        ball.reset()
+                
 
 
     display.update()
