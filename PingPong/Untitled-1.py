@@ -10,7 +10,9 @@ window.blit(background,(0,0))
 game = True
 finish = False
 clock = time.Clock()
-FPS = 60
+FPS = 120
+
+
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -50,6 +52,10 @@ lose2 = font.render('Player 2 Lose!', 180, (180, 0, 0))
 dx = 3
 dy = 3
 
+score_left = 0
+score_right = 0
+
+
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -71,17 +77,31 @@ while game:
 
         ball.rect.x += dx #движение мяча
         ball.rect.y += dy #движение мяча
-        if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
-            dx *= -1
-        if ball.rect.y < 0 or ball.rect.y > win_height-40:
-            dy *= -1
 
+        if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
+            dx *= - 1
+        if ball.rect.y < 0 or ball.rect.y > win_height-40:
+            dy *= - 1
+
+        score_l = font.render(str(score_left), True, (255,255,255))
+        score_r = font.render(str(score_right), True, (255,255,255))
+        window.blit(score_l, (10, 10))
+        window.blit(score_r, (win_width-25, 10))
+
+        if ball.rect.x < 0:
+            score_right += 1
+            ball.rect.x = 280
+            ball.rect.y = 200
+
+        if ball.rect.x > win_width:
+            score_left += 1
+            ball.rect.x = 280
+            ball.rect.y = 200
+        
         racket1.reset()
         racket2.reset()
 
         ball.reset()
                 
-
-
     display.update()
     clock.tick(FPS)
